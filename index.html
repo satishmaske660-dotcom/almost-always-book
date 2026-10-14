@@ -438,14 +438,35 @@ article.chapter h3,
   <div class="reviews-heading">
     <span class="reviews-kicker">A NOTE FROM THE READER</span>
     <h2>Readers’ Reviews</h2>
-    <p>Every story means something different to the person who reads it. What did <em>Almost, Always</em> mean to you?</p>
+    <p>Finished <em>Almost, Always</em>? Leave a rating and tell other readers what Rohan and Tara’s story meant to you.</p>
   </div>
-  <div class="review-card" id="published-reviews">
-    <p class="review-empty">Want to share your thoughts about Rohan and Tara’s story? You can leave a comment in the book’s GitHub Discussions while I finish connecting the on-page review system.</p>
-    <p style="text-align:center;margin-top:1.25rem">
-      <a class="review-button" href="https://github.com/satishmaske660-dotcom/almost-always-book/discussions" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none">Share Your Review</a>
-    </p>
-    <p class="review-note" style="text-align:center">GitHub may ask you to sign in to post a comment.</p>
+  <div class="review-card" id="published-reviews" aria-live="polite">
+    <p class="review-empty" id="review-loading">Loading reader reviews…</p>
+    <div id="review-list"></div>
+  </div>
+  <div class="leave-review">
+    <h2>Leave a review</h2>
+    <p>Your review will be visible to other readers after you submit it. Please keep feedback respectful and spoiler-free where possible.</p>
+    <form class="review-form" id="reader-review-form">
+      <label for="reader-name">Your name or pen name</label>
+      <input id="reader-name" name="name" maxlength="60" autocomplete="nickname" required placeholder="How should we credit you?">
+      <fieldset class="rating-field">
+        <legend>Your rating</legend>
+        <div class="star-picker" role="radiogroup" aria-label="Rate Almost, Always">
+          <input id="rating-5" type="radio" name="rating" value="5" checked><label for="rating-5" aria-label="5 stars">★</label>
+          <input id="rating-4" type="radio" name="rating" value="4"><label for="rating-4" aria-label="4 stars">★</label>
+          <input id="rating-3" type="radio" name="rating" value="3"><label for="rating-3" aria-label="3 stars">★</label>
+          <input id="rating-2" type="radio" name="rating" value="2"><label for="rating-2" aria-label="2 stars">★</label>
+          <input id="rating-1" type="radio" name="rating" value="1"><label for="rating-1" aria-label="1 star">★</label>
+        </div>
+      </fieldset>
+      <label for="reader-review">Your review</label>
+      <textarea id="reader-review" name="review" rows="5" maxlength="2000" required placeholder="What stayed with you after reading?"></textarea>
+      <button class="review-button" type="submit" id="review-submit">Publish review</button>
+      <p class="review-status" id="review-status" role="status"></p>
+      <p class="review-note">Please don’t include private information. Reviews are public and may be removed if they contain spam or abuse.</p>
+    </form>
   </div>
 </section>
-</main><footer>© Satish Maske · Almost, Always<br>All rights reserved.<br><br><span style="color:var(--ink);">Loved reading <em>Almost, Always</em>?</span><br><a href="https://www.instagram.com/stsh.msk/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;color:var(--accent);text-decoration:none;font-weight:700;">Leave a review on Instagram · @stsh.msk</a></footer></body></html>
+</main><footer>© Satish Maske · Almost, Always<br>All rights reserved.<br><br><span style="color:var(--ink);">Loved reading <em>Almost, Always</em>?</span><br><a href="https://www.instagram.com/stsh.msk/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;color:var(--accent);text-decoration:none;font-weight:700;">Leave a review on Instagram · @stsh.msk</a></footer>  <script src="./reviews.js"></script>
+</body></html>
