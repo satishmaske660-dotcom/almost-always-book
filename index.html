@@ -117,14 +117,21 @@ article.chapter h3,
 .review-form input:not([type=radio]),.review-form textarea{display:block;width:100%;padding:12px 13px;border:1px solid #d8c2bf;border-radius:5px;background:var(--card);color:var(--ink);font:16px Georgia,'Times New Roman',serif}
 .review-form textarea{resize:vertical;line-height:1.7}
 .rating-field{padding:0;border:0;margin:18px 0}
-.star-picker{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:7px;align-items:center;width:max-content;max-width:100%;padding:8px 12px;border:1px solid #e3c9c5;border-radius:12px;background:#fffaf8}
+.star-picker{display:flex;flex-direction:row;justify-content:flex-start;gap:7px;align-items:center;width:max-content;max-width:100%;padding:8px 12px;border:1px solid #e3c9c5;border-radius:12px;background:#fffaf8}
 .star-picker input{position:absolute;opacity:0;width:1px;height:1px}
 .star-picker label{font-size:clamp(36px,8vw,44px);line-height:1.2;color:#d9c9c5;cursor:pointer;transition:color .16s,transform .16s;user-select:none}
-.star-picker input:checked+label,.star-picker input:checked~input+label{color:#d49a38}
-.star-picker label:hover,.star-picker label:hover~input+label{color:#b8791d}
+.star-picker:has(#rating-1:checked) label[for="rating-1"],
+.star-picker:has(#rating-2:checked) label[for="rating-1"],.star-picker:has(#rating-2:checked) label[for="rating-2"],
+.star-picker:has(#rating-3:checked) label[for="rating-1"],.star-picker:has(#rating-3:checked) label[for="rating-2"],.star-picker:has(#rating-3:checked) label[for="rating-3"],
+.star-picker:has(#rating-4:checked) label[for="rating-1"],.star-picker:has(#rating-4:checked) label[for="rating-2"],.star-picker:has(#rating-4:checked) label[for="rating-3"],.star-picker:has(#rating-4:checked) label[for="rating-4"],
+.star-picker:has(#rating-5:checked) label[for="rating-1"],.star-picker:has(#rating-5:checked) label[for="rating-2"],.star-picker:has(#rating-5:checked) label[for="rating-3"],.star-picker:has(#rating-5:checked) label[for="rating-4"],.star-picker:has(#rating-5:checked) label[for="rating-5"]{color:#d49a38}
+.star-picker:has(label[for="rating-1"]:hover) label[for="rating-1"],
+.star-picker:has(label[for="rating-2"]:hover) label[for="rating-1"],.star-picker:has(label[for="rating-2"]:hover) label[for="rating-2"],
+.star-picker:has(label[for="rating-3"]:hover) label[for="rating-1"],.star-picker:has(label[for="rating-3"]:hover) label[for="rating-2"],.star-picker:has(label[for="rating-3"]:hover) label[for="rating-3"],
+.star-picker:has(label[for="rating-4"]:hover) label[for="rating-1"],.star-picker:has(label[for="rating-4"]:hover) label[for="rating-2"],.star-picker:has(label[for="rating-4"]:hover) label[for="rating-3"],.star-picker:has(label[for="rating-4"]:hover) label[for="rating-4"],
+.star-picker:has(label[for="rating-5"]:hover) label[for="rating-1"],.star-picker:has(label[for="rating-5"]:hover) label[for="rating-2"],.star-picker:has(label[for="rating-5"]:hover) label[for="rating-3"],.star-picker:has(label[for="rating-5"]:hover) label[for="rating-4"],.star-picker:has(label[for="rating-5"]:hover) label[for="rating-5"]{color:#b8791d}
 .star-picker label:hover{transform:scale(1.12)}
 .star-picker input:focus-visible+label{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-.star-picker:has(input:checked)::after{content:attr(data-rating);font:12px Arial,sans-serif;color:var(--muted);margin-left:7px}
 .review-button{display:inline-block;margin-top:20px;padding:12px 20px;border:0;border-radius:3px;background:var(--ink);color:#fff;text-decoration:none;font:14px Arial,sans-serif;cursor:pointer}
 .review-note,.review-status{font-size:12px;color:var(--muted);line-height:1.6}
 .review-status{font-size:14px}
