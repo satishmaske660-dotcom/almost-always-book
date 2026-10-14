@@ -2,8 +2,8 @@
    Configure these with your Supabase project URL and publishable/anon key.
    Never put a Supabase secret/service-role key in this public file. */
 (() => {
-  const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-  const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY";
+  const SUPABASE_URL = "https://miifyidqvpzkclvcuqdv.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_ZFT_U_hZN4GyzP_Lsv0Q4Q__u1oHPIh";
   const form = document.getElementById("reader-review-form");
   const list = document.getElementById("review-list");
   const loading = document.getElementById("review-loading");
@@ -11,13 +11,6 @@
   const submit = document.getElementById("review-submit");
 
   if (!form || !list) return;
-  if (SUPABASE_URL.startsWith("YOUR_") || SUPABASE_ANON_KEY.startsWith("YOUR_")) {
-    loading.textContent = "Reader reviews are not connected yet. The author needs to finish the one-time database setup.";
-    submit.disabled = true;
-    status.textContent = "Setup required: configure Supabase in reviews.js.";
-    return;
-  }
-
   const loadSupabase = () => new Promise((resolve, reject) => {
     if (window.supabase) return resolve(window.supabase);
     const script = document.createElement("script");
