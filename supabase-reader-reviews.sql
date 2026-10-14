@@ -30,6 +30,20 @@ with check (
 grant select, insert on public.reader_reviews to anon, authenticated;
 grant usage, select on sequence public.reader_reviews_id_seq to anon, authenticated;
 
--- To review submissions before publication, change the table default:
--- alter table public.reader_reviews alter column approved set default false;
--- Then insert/update approvals from the Supabase dashboard as the project owner.
+
+-- Enable live review updates in Supabase Realtime (safe to run more than once).
+do $
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'reader_reviews'
+  ) then
+    alter publication supabase_realtime add table public.reader_reviews;
+  end if;
+end $;
+
+-- Optional moderation: set the default to false, then approve reviews from the Supabase dashboard.
+alter table public.reader_reviews alter column approved set default true;
