@@ -154,7 +154,7 @@ article.chapter h3,
 
 
 /* Subtle reader music control */
-.book-music{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:calc(100% - 28px);margin:12px auto 18px;padding:10px 13px;background:rgba(255,250,248,.97);border:1px solid var(--line);border-radius:999px;box-shadow:0 5px 22px #51383b20;font:12px Arial,sans-serif;color:var(--ink)}
+.book-music{position:fixed;right:14px;bottom:14px;z-index:1000;display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;max-width:calc(100% - 28px);margin:0;padding:10px 13px;background:rgba(255,250,248,.97);border:1px solid var(--line);border-radius:999px;box-shadow:0 5px 22px #51383b30;font:12px Arial,sans-serif;color:var(--ink)}
 .book-music button{border:0;border-radius:50%;width:34px;height:34px;background:var(--ink);color:#fff;cursor:pointer;font-size:15px}
 .book-music span{white-space:nowrap}
 @media(max-width:420px){.book-music{padding:8px 10px}.book-music span{font-size:11px}}
@@ -170,7 +170,7 @@ article.chapter h3,
 </head><body><header><div class="brand">ALMOST, ALWAYS</div><nav><a href="#about">About</a></nav></header>
 <div class="book-music" id="book-music" aria-label="Background piano music">
   <button type="button" id="music-toggle" aria-label="Play background piano music" title="Play music">▶</button>
-  <span id="music-label">For Us · Piano</span>
+  <span id="music-label">Some feelings are better heard.</span>
   <audio id="book-audio" preload="auto" autoplay loop>
     <source src="https://raw.githubusercontent.com/satishmaske660-dotcom/almost-always-book/main/BTS_V_-_For_Us___EASY_Piano_Tutorial_by_Pianella_Piano(256k).mp3" type="audio/mpeg">
   </audio>
@@ -968,11 +968,11 @@ article.chapter h3,
   var button=document.getElementById('music-toggle');
   var label=document.getElementById('music-label');
   if(!audio||!button)return;
-  function showPlaying(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='For Us · Playing';}
-  function showPaused(){button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='For Us · Piano';}
+  function showPlaying(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='Some feelings are better heard.';}
+  function showPaused(){button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='Some feelings are better heard.';}
   button.addEventListener('click',function(){
     if(audio.paused){
-      audio.play().then(showPlaying).catch(function(){label.textContent='Tap to play piano';});
+      audio.play().then(showPlaying).catch(function(){label.textContent='Some feelings are better heard.';});
     }else{
       audio.pause();showPaused();
     }
