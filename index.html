@@ -152,6 +152,13 @@ article.chapter h3,
 
 @media(max-width:480px){.ambient-player{gap:8px;padding:9px 8px}.ambient-player .music-copy{font-size:11px}.ambient-player .music-open{padding:8px 10px}}
 
+
+/* Subtle reader music control */
+.book-music{position:fixed;right:14px;bottom:14px;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 13px;background:rgba(255,250,248,.97);border:1px solid var(--line);border-radius:999px;box-shadow:0 5px 22px #51383b20;font:12px Arial,sans-serif;color:var(--ink)}
+.book-music button{border:0;border-radius:50%;width:34px;height:34px;background:var(--ink);color:#fff;cursor:pointer;font-size:15px}
+.book-music span{white-space:nowrap}
+@media(max-width:420px){.book-music{right:9px;bottom:9px;padding:8px 10px}.book-music span{font-size:11px}}
+
 </style><!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9K5PCTF27Y"></script>
 <script>
@@ -950,5 +957,31 @@ article.chapter h3,
 </main><footer>© Satish Maske · Almost, Always<br>All rights reserved.<br><br><span style="color:var(--ink);">Loved reading <em>Almost, Always</em>?</span><br><a href="https://www.instagram.com/stsh.msk/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;color:var(--accent);text-decoration:none;font-weight:700;">Leave a review on Instagram · @stsh.msk</a></footer>  <script src="./reviews.js?v=2" defer></script>
 
 
+
+
+<div class="book-music" id="book-music" aria-label="Background piano music">
+  <button type="button" id="music-toggle" aria-label="Play background piano music" title="Play music">▶</button>
+  <span id="music-label">For Us · Piano</span>
+  <audio id="book-audio" preload="none" loop>
+    <source src="https://raw.githubusercontent.com/satishmaske660-dotcom/almost-always-book/main/BTS_V_-_For_Us___EASY_Piano_Tutorial_by_Pianella_Piano(256k).mp3" type="audio/mpeg">
+  </audio>
+</div>
+<script>
+(function(){
+  var audio=document.getElementById('book-audio');
+  var button=document.getElementById('music-toggle');
+  var label=document.getElementById('music-label');
+  if(!audio||!button)return;
+  button.addEventListener('click',function(){
+    if(audio.paused){
+      audio.play().then(function(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='For Us · Playing';})
+      .catch(function(){label.textContent='Tap to try again';});
+    }else{
+      audio.pause();button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='For Us · Piano';
+    }
+  });
+  audio.addEventListener('ended',function(){button.textContent='▶';label.textContent='For Us · Piano';});
+})();
+</script>
 
 </body></html>
