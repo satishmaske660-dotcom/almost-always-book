@@ -949,53 +949,93 @@ article.chapter h3,
 </main><footer>© Satish Maske · Almost, Always<br>All rights reserved.<br><br><span style="color:var(--ink);">Loved reading <em>Almost, Always</em>?</span><br><a href="https://www.instagram.com/stsh.msk/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;color:var(--accent);text-decoration:none;font-weight:700;">Leave a review on Instagram · @stsh.msk</a></footer>  <script src="./reviews.js?v=2" defer></script>
 
 <script>
-/* Original, browser-generated soft ambient tones. No external audio or tracking. */
+/* A gentle original piano-style reading piece, synthesized locally in the browser. */
 (function(){
   const toggle=document.getElementById('ambient-toggle');
   const volume=document.getElementById('ambient-volume');
+  const copy=document.querySelector('.ambient-player .music-copy');
   if(!toggle||!volume)return;
-  let ctx=null, master=null, playing=false, timer=null, step=0, voices=[];
-  const notes=[
-    [261.63,329.63,392.00,523.25],
-    [220.00,261.63,329.63,440.00],
-    [174.61,220.00,261.63,349.23],
-    [196.00,246.94,293.66,392.00]
+  let ctx=null, master=null, playing=false, timer=null, beat=0;
+  const bpm=72, beatMs=60000/bpm;
+  // A calm 16-beat melody with soft broken-chord accompaniment.
+  const chords=[
+    [261.63,329.63,392.00,493.88], // Cmaj7
+    [220.00,261.63,329.63,392.00], // Am7
+    [174.61,220.00,261.63,329.63], // Fmaj7
+    [196.00,246.94,293.66,392.00]  // G
   ];
-  function tone(freq,when,duration,level,type){
-    const osc=ctx.createOscillator(), gain=ctx.createGain();
-    osc.type=type||'sine'; osc.frequency.setValueAtTime(freq,when);
-    gain.gain.setValueAtTime(0.0001,when);
-    gain.gain.exponentialRampToValueAtTime(Math.max(0.0002,level),when+0.45);
-    gain.gain.exponentialRampToValueAtTime(0.0001,when+duration);
-    osc.connect(gain); gain.connect(master);
-    osc.start(when); osc.stop(when+duration+0.08);
-    voices.push(osc);
-    osc.onended=()=>{voices=voices.filter(v=>v!==osc);};
+  const melody=[
+    [659.25,0],[587.33,1],[523.25,2],[392.00,3],
+    [440.00,0],[523.25,1],[587.33,2],[523.25,3],
+    [523.25,0],[440.00,1],[392.00,2],[329.63,3],
+    [392.00,0],[440.00,1],[493.88,2],[392.00,3]
+  ];
+  function pianoNote(freq,when,duration,level){
+    // Several fast-decaying partials create a soft, plucked piano-like tone.
+    const partials=[[1,1],[2,0.34],[3,0.13],[4,0.045]];
+    partials.forEach(([multiple,weight])=>{
+      const osc=ctx.createOscillator(), gain=ctx.createGain();
+      osc.type='sine';
+      osc.frequency.setValueAtTime(freq*multiple,when);
+      const peak=Math.max(0.00003,level*weight);
+      gain.gain.setValueAtTime(0.0001,when);
+      gain.gain.linearRampToValueAtTime(peak,when+0.009);
+      gain.gain.exponentialRampToValueAtTime(Math.max(0.00002,peak*0.28),when+0.18);
+      gain.gain.exponentialRampToValueAtTime(0.00001,when+duration);
+      osc.connect(gain);gain.connect(master);
+      osc.start(when);osc.stop(when+duration+0.03);
+    });
   }
-  function phrase(){
+  function scheduleBeat(){
     if(!playing||!ctx)return;
-    const now=ctx.currentTime+0.08, chord=notes[Math.floor(step/4)%notes.length], idx=step%4;
-    // Slow, soft arpeggios with a warm sustained note underneath.
-    tone(chord[idx],now,2.4,0.12,'sine');
-    tone(chord[(idx+2)%4]*2,now+0.22,1.7,0.035,'triangle');
-    if(idx===0) tone(chord[0]/2,now,3.8,0.045,'sine');
-    step++;
-    timer=setTimeout(phrase,1450);
+    const now=ctx.currentTime+0.035;
+    const bar=Math.floor(beat/4)%4;
+    const within=beat%4;
+    const chord=chords[bar];
+    // Low root on the first beat of each bar, light arpeggio on every beat.
+    if(within===0)pianoNote(chord[0]/2,now,1.8,0.10);
+    const accompaniment=[0,2,1,2][within];
+    pianoNote(chord[accompaniment],now,1.15,0.075);
+    const [freq,offset]=melody[beat%melody.length];
+    pianoNote(freq,now+0.015,1.5,0.105);
+    // A quiet higher note occasionally adds a little warmth.
+    if(within===2)pianoNote(chord[3],now+0.12,0.9,0.025);
+    beat++;
+    timer=setTimeout(scheduleBeat,beatMs);
   }
   async function start(){
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx){toggle.textContent='Music unavailable';return;}
-    if(!ctx){ctx=new AudioCtx();master=ctx.createGain();master.gain.value=Number(volume.value);master.connect(ctx.destination);}
-    await ctx.resume(); playing=true; master.gain.setTargetAtTime(Number(volume.value),ctx.currentTime,0.25);
-    toggle.textContent='Ⅱ Pause music';toggle.setAttribute('aria-pressed','true');phrase();
+    if(!ctx){
+      ctx=new AudioCtx();
+      master=ctx.createGain();
+      master.gain.value=Number(volume.value);
+      master.connect(ctx.destination);
+    }
+    await ctx.resume();
+    playing=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setTargetAtTime(Number(volume.value),ctx.currentTime,0.15);
+    toggle.textContent='Ⅱ Pause music';
+    toggle.setAttribute('aria-pressed','true');
+    if(copy)copy.textContent='Soft piano · original reading piece';
+    scheduleBeat();
   }
   function stop(){
-    playing=false;clearTimeout(timer);
-    if(ctx&&master)master.gain.setTargetAtTime(0.0001,ctx.currentTime,0.12);
-    toggle.textContent='▶ Play music';toggle.setAttribute('aria-pressed','false');
+    playing=false;
+    clearTimeout(timer);
+    if(ctx&&master){
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setTargetAtTime(0.0001,ctx.currentTime,0.08);
+    }
+    toggle.textContent='▶ Play piano';
+    toggle.setAttribute('aria-pressed','false');
+    if(copy)copy.textContent='A quiet moment · piano music';
   }
-  toggle.addEventListener('click',()=>{if(playing)stop();else start().catch(()=>{toggle.textContent='Tap to play music';});});
-  volume.addEventListener('input',()=>{if(ctx&&master&&playing)master.gain.setTargetAtTime(Number(volume.value),ctx.currentTime,0.08);});
+  toggle.addEventListener('click',()=>{if(playing)stop();else start().catch(()=>{toggle.textContent='Tap to play piano';});});
+  volume.addEventListener('input',()=>{
+    if(ctx&&master&&playing)master.gain.setTargetAtTime(Number(volume.value),ctx.currentTime,0.08);
+  });
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)stop();});
 })();
 </script>
