@@ -962,7 +962,7 @@ article.chapter h3,
 <div class="book-music" id="book-music" aria-label="Background piano music">
   <button type="button" id="music-toggle" aria-label="Play background piano music" title="Play music">▶</button>
   <span id="music-label">For Us · Piano</span>
-  <audio id="book-audio" preload="none" loop>
+  <audio id="book-audio" preload="auto" autoplay loop>
     <source src="https://raw.githubusercontent.com/satishmaske660-dotcom/almost-always-book/main/BTS_V_-_For_Us___EASY_Piano_Tutorial_by_Pianella_Piano(256k).mp3" type="audio/mpeg">
   </audio>
 </div>
@@ -972,15 +972,21 @@ article.chapter h3,
   var button=document.getElementById('music-toggle');
   var label=document.getElementById('music-label');
   if(!audio||!button)return;
+  function showPlaying(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='For Us · Playing';}
+  function showPaused(){button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='For Us · Piano';}
   button.addEventListener('click',function(){
     if(audio.paused){
-      audio.play().then(function(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='For Us · Playing';})
-      .catch(function(){label.textContent='Tap to try again';});
+      audio.play().then(showPlaying).catch(function(){label.textContent='Tap to play piano';});
     }else{
-      audio.pause();button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='For Us · Piano';
+      audio.pause();showPaused();
     }
   });
-  audio.addEventListener('ended',function(){button.textContent='▶';label.textContent='For Us · Piano';});
+  audio.addEventListener('play',showPlaying);
+  audio.addEventListener('pause',showPaused);
+  audio.addEventListener('ended',showPaused);
+  // Try to start automatically when the reader opens the book.
+  // Browsers may block audible autoplay until the reader interacts with the page.
+  audio.play().then(showPlaying).catch(function(){label.textContent='Tap to play piano';});
 })();
 </script>
 
