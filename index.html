@@ -969,10 +969,10 @@ article.chapter h3,
   var label=document.getElementById('music-label');
   if(!audio||!button)return;
   function showPlaying(){button.textContent='Ⅱ';button.setAttribute('aria-label','Pause background piano music');button.title='Pause music';label.textContent='Some feelings are better heard.';}
-  function showPaused(){button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='Some feelings are better heard.';}
+  function showPaused(){button.textContent='▶';button.setAttribute('aria-label','Play background piano music');button.title='Play music';label.textContent='A melody for the unsaid.';}
   button.addEventListener('click',function(){
     if(audio.paused){
-      audio.play().then(showPlaying).catch(function(){label.textContent='Some feelings are better heard.';});
+      audio.play().then(showPlaying).catch(function(){label.textContent='A melody for the unsaid.';});
     }else{
       audio.pause();showPaused();
     }
@@ -982,7 +982,7 @@ article.chapter h3,
   audio.addEventListener('ended',showPaused);
   // Try to start automatically when the reader opens the book.
   // Browsers may block audible autoplay until the reader interacts with the page.
-  audio.play().then(showPlaying).catch(function(){label.textContent='Some feelings are better heard.';});
+  audio.play().then(showPlaying).catch(function(){label.textContent='A melody for the unsaid.';});
 })();
 </script>
 
